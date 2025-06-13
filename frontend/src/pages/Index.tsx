@@ -1,19 +1,35 @@
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import FoodList from "../components/read/FoodList";
 import CreateFoodForm from "../components/create/CreateFoodForm";
 import EditFoodForm from "../components/update/EditFoodForm";
 import { foodItems, categories } from "../data/mockData";
 import { FoodItem } from "../types/FoodItem";
 
+import axios from "axios"
+
 const Index = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [isCreating, setIsCreating] = useState(false);
   const [editingItem, setEditingItem] = useState<FoodItem | null>(null);
+  const [filteredItems, setFilteredItems] = useState<FoodItem[] | []>([])
 
-  const filteredItems = selectedCategory === "all" 
-    ? foodItems 
-    : foodItems.filter(item => item.category === selectedCategory);
+  // so i have to edit the filteredItems  to get data from the back end
+
+  // const filteredItems = selectedCategory === "all" 
+  //   ? foodItems 
+  //   : foodItems.filter(item => item.category === selectedCategory);
+
+  useEffect(()=>{
+    axios.get("http://localhost:4040/meal").then((res) => {
+      const data = res.data
+      console.log(data)
+      selectedCategory === "all" 
+       ? setFilteredItems(data)
+       : setFilteredItems(data.filter(item => item.category === selectedCategory));
+    })
+  }, [])
+
 
   return (
     <div className="min-h-screen bg-background">
@@ -69,7 +85,7 @@ const Index = () => {
               item={editingItem} 
               onCancel={() => setEditingItem(null)} 
             />
-          ) : (
+          ) : ( 
             <FoodList 
               items={filteredItems} 
               onEdit={setEditingItem}

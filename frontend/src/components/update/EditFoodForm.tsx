@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { FoodItem } from "../../types/FoodItem";
 import { categories } from "../../data/mockData";
+import axios from "axios";
 
 interface EditFoodFormProps {
   item: FoodItem;
@@ -18,8 +19,20 @@ const EditFoodForm = ({ item, onCancel }: EditFoodFormProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // TODO: Implement update functionality
+    const id = item.id
+    const name = formData.name
+    const price = formData.price
+    const category = formData.category
+
+    axios.patch("http://localhost:4040/meal", { id, name, price, category})
+    .then((res)=>{
+      const data = res.data
+      console.log(data.message)
+    })
     console.log("Update item:", { ...item, ...formData, price: parseFloat(formData.price) });
+    alert(" meal updated successfully")
     onCancel();
+    
   };
 
   return (

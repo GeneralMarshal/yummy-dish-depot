@@ -1,5 +1,6 @@
 
 import { FoodItem } from "../../types/FoodItem";
+import axios from "axios";
 
 interface FoodCardProps {
   item: FoodItem;
@@ -9,14 +10,24 @@ interface FoodCardProps {
 const FoodCard = ({ item, onEdit }: FoodCardProps) => {
   const handleDelete = () => {
     // TODO: Implement delete functionality
-    console.log("Delete item:", item.id);
+    const id = item.id
+
+    console.log("Delete item:", id);
+    axios.delete("http://localhost:4040/meal", { data: { id }})
+    .then((res)=>{
+      const data = res.data
+      if(data.message === "success"){
+        alert("meal deleted successfully")
+      }
+    })
+
   };
 
   return (
     <div className="bg-card border border-border rounded-lg p-6 hover:shadow-md transition-shadow">
       <div className="mb-4">
         <h3 className="text-lg font-semibold text-card-foreground mb-2">{item.name}</h3>
-        <p className="text-2xl font-bold text-primary">${item.price.toFixed(2)}</p>
+        <p className="text-2xl font-bold text-primary">${item.price}</p>
         <span className="inline-block bg-secondary text-secondary-foreground px-2 py-1 rounded text-sm mt-2">
           {item.category}
         </span>

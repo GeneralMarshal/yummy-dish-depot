@@ -1,6 +1,7 @@
 
 import { useState } from "react";
 import { categories } from "../../data/mockData";
+import axios from "axios";
 
 interface CreateFoodFormProps {
   onCancel: () => void;
@@ -16,8 +17,19 @@ const CreateFoodForm = ({ onCancel }: CreateFoodFormProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // TODO: Implement create functionality
-    console.log("Create item:", formData);
-    onCancel();
+
+    const name = formData.name
+    const price = formData.price
+    const category = formData.category
+    axios.post("http://localhost:4040/meal", {name, price, category})
+    .then((res)=>{
+     const data = res.data
+     console.log(data.message)
+
+    })
+    alert("meal created successfully")
+    onCancel()
+    
   };
 
   return (

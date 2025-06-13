@@ -11,6 +11,7 @@ app.use(bodyParser.json())
 
 app.use("/meal", mealRouter)
 
-app.listen((3000), ()=> {
+app.listen((4040), ()=> {
     console.log("we are live")
+    console.log(`running on port ${4040}`)
 })
