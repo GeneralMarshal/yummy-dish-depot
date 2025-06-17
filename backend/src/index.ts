@@ -2,6 +2,11 @@ import express from "express"
 import cors from "cors"
 import bodyParser from "body-parser"
 import { mealRouter } from "./routes/mealRouter"
+import mongoose from "mongoose"
+import dotenv from "dotenv"
+
+dotenv.config()
+const mongoUri = process.env.MONGO_URI
 
 const app = express()
 
@@ -11,7 +16,19 @@ app.use(bodyParser.json())
 
 app.use("/meal", mealRouter)
 
-app.listen((4040), ()=> {
-    console.log("we are live")
-    console.log(`running on port ${4040}`)
-})
+if(mongoUri){
+    mongoose.connect(mongoUri)
+    .then(()=>{
+        
+        app.listen((process.env.PORT), ()=> {
+            console.log(`connected to db and running on port ${process.env.PORT}🚀`)
+        })
+    })
+    .catch((err)=>{
+        console.log(err) 
+    })  
+
+}
+
+
+
