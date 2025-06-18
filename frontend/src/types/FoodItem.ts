@@ -1,6 +1,6 @@
 
 export interface FoodItem {
-  id: string;
+  _id: string;
   name: string;
   price: number;
   category: string;

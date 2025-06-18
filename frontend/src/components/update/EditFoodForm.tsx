@@ -19,15 +19,14 @@ const EditFoodForm = ({ item, onCancel }: EditFoodFormProps) => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // TODO: Implement update functionality
-    const id = item.id
+    const id = item._id
     const name = formData.name
     const price = formData.price
     const category = formData.category
 
-    axios.patch("http://localhost:4040/meal", { id, name, price, category})
+    axios.patch("http://localhost:4000/meal", { id, name, price, category})
     .then((res)=>{
       const data = res.data
-      console.log(data.message)
     })
     console.log("Update item:", { ...item, ...formData, price: parseFloat(formData.price) });
     alert(" meal updated successfully")

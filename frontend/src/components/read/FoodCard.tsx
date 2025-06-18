@@ -10,15 +10,16 @@ interface FoodCardProps {
 const FoodCard = ({ item, onEdit }: FoodCardProps) => {
   const handleDelete = () => {
     // TODO: Implement delete functionality
-    const id = item.id
+    const id = item._id
 
     console.log("Delete item:", id);
-    axios.delete("http://localhost:4040/meal", { data: { id }})
+    axios.delete("http://localhost:4000/meal", { data: { id }})
     .then((res)=>{
       const data = res.data
-      if(data.message === "success"){
-        alert("meal deleted successfully")
-      }
+      if(data.error){
+        console.log( "Error:" + data.error)
+      } 
+      console.log(data)
     })
 
   };

@@ -21,7 +21,7 @@ const CreateFoodForm = ({ onCancel }: CreateFoodFormProps) => {
     const name = formData.name
     const price = formData.price
     const category = formData.category
-    axios.post("http://localhost:4040/meal", {name, price, category})
+    axios.post("http://localhost:4000/meal", {name, price, category})
     .then((res)=>{
      const data = res.data
      console.log(data.message)

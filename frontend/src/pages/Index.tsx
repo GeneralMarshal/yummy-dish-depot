@@ -12,6 +12,7 @@ const Index = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [isCreating, setIsCreating] = useState(false);
   const [editingItem, setEditingItem] = useState<FoodItem | null>(null);
+  const [allItems, setAllItems] = useState<FoodItem | null>(null)
   const [filteredItems, setFilteredItems] = useState<FoodItem[] | []>([])
 
   // so i have to edit the filteredItems  to get data from the back end
@@ -21,14 +22,20 @@ const Index = () => {
   //   : foodItems.filter(item => item.category === selectedCategory);
 
   useEffect(()=>{
-    axios.get("http://localhost:4040/meal").then((res) => {
-      const data = res.data
-      console.log(data)
-      selectedCategory === "all" 
-       ? setFilteredItems(data)
-       : setFilteredItems(data.filter(item => item.category === selectedCategory));
-    })
-  }, [])
+    async function fetchData(){
+      try{
+       const res = await axios.get("http://localhost:4000/meal")
+        const data = res.data
+        selectedCategory === "all" 
+         ? setFilteredItems(data)
+         : setFilteredItems(data.filter((item) => item.category === selectedCategory));
+        }
+      catch(error){
+        console.log("Error occured:" + error)
+      }
+    }
+    fetchData()
+  }, [selectedCategory])
 
 
   return (
@@ -57,7 +64,9 @@ const Index = () => {
               {categories.map((category) => (
                 <button
                   key={category}
-                  onClick={() => setSelectedCategory(category)}
+                  onClick={() => {
+                    setSelectedCategory(category)
+                  }}
                   className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                     selectedCategory === category
                       ? "bg-primary text-primary-foreground"

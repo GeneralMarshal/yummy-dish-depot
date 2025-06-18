@@ -28,6 +28,8 @@ if(mongoUri){
         console.log(err) 
     })  
 
+} else{
+    console.log("couldn't connect to database")
 }
 
 
