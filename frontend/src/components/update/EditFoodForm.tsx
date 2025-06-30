@@ -15,6 +15,7 @@ const EditFoodForm = ({ item, onCancel }: EditFoodFormProps) => {
     price: item.price.toString(),
     category: item.category
   });
+  
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,7 +32,7 @@ const EditFoodForm = ({ item, onCancel }: EditFoodFormProps) => {
     console.log("Update item:", { ...item, ...formData, price: parseFloat(formData.price) });
     alert(" meal updated successfully")
     onCancel();
-    
+      
   };
 
   return (

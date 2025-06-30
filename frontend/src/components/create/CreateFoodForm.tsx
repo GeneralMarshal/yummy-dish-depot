@@ -13,23 +13,30 @@ const CreateFoodForm = ({ onCancel }: CreateFoodFormProps) => {
     price: "",
     category: categories[0]
   });
+  const [error, setError] = useState("")
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // TODO: Implement create functionality
 
     const name = formData.name
     const price = formData.price
     const category = formData.category
-    axios.post("http://localhost:4000/meal", {name, price, category})
-    .then((res)=>{
-     const data = res.data
-     console.log(data.message)
+    try{
+      const user = JSON.parse(localStorage.getItem("user") || "{}")
 
-    })
-    alert("meal created successfully")
-    onCancel()
-    
+      const res = await axios.post("http://localhost:4000/meal", {name, price, category}, {
+        headers:{
+          Authorization: `Bearer ${user.token}`
+        }
+      }
+      )
+      const data = res.data
+      alert("meal created successfully")
+      onCancel()
+    }catch(error){
+      console.log("Error occured:" + error)
+    } 
   };
 
   return (

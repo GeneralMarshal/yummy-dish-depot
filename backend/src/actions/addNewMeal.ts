@@ -4,7 +4,7 @@ import { mealFile } from "../utils/constants"
 import fs from "fs"
 
 
-export default function addMeal(name:string, price: number, category: string){
+export default function addMeal(name:string, price: number, category: string, user:string ){
 
     const content = fs.readFileSync(mealFile, "utf-8")
     const mealList:FoodItem[] = content ? JSON.parse(content) : []
@@ -28,6 +28,7 @@ export default function addMeal(name:string, price: number, category: string){
         mealList.push(
             {
                 id: id,
+                user: user,
                 name: name,
                 price: Number(price),
                 category: category

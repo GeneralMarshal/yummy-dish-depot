@@ -20,6 +20,7 @@ const FoodCard = ({ item, onEdit }: FoodCardProps) => {
         console.log( "Error:" + data.error)
       } 
       console.log(data)
+      alert("the meal has been deleted successfully")
     })
 
   };

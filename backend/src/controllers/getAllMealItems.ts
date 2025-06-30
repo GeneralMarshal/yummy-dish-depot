@@ -1,9 +1,18 @@
 import { Response, Request } from "express";
 import listAllMeals from "../actions/listAllMeals";
 
-export default async function getAllFoodItems( req: Request, res: Response){
+interface AuthRequest extends Request{
+    user?: any
+}
+
+
+export default async function getAllFoodItems( req: AuthRequest, res: Response){
      try{
-        const allMeals = await listAllMeals()
+        if(!req.user){
+            res.status(401)
+            throw new Error("not authorized")
+        }
+        const allMeals = await listAllMeals( req.user._id.toString() )
         res.status(200).json(allMeals)
      }catch(error){
         if ( error instanceof Error){

@@ -3,9 +3,9 @@ import { mealFile } from "../utils/constants"
 import dishesModel from "../models/dishesModel"
 import { Request, Response } from "express"
 
-export default async function listAllMeals(){
+export default async function listAllMeals( id: string ){
     try{
-        const dishesList = await dishesModel.find({})
+        const dishesList = await dishesModel.find({user: id})
         console.log(dishesList)
         return dishesList
     }catch(error){

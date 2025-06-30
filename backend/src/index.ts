@@ -4,6 +4,7 @@ import bodyParser from "body-parser"
 import { mealRouter } from "./routes/mealRouter"
 import mongoose from "mongoose"
 import dotenv from "dotenv"
+import { userRouter } from "./routes/userRouter"
 
 dotenv.config()
 const mongoUri = process.env.MONGO_URI
@@ -15,6 +16,8 @@ app.use(cors({ origin: "*"}))
 app.use(bodyParser.json())
 
 app.use("/meal", mealRouter)
+app.use("/user", userRouter)
+
 
 if(mongoUri){
     mongoose.connect(mongoUri)

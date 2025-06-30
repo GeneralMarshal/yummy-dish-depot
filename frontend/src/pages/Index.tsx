@@ -1,5 +1,6 @@
 
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import FoodList from "../components/read/FoodList";
 import CreateFoodForm from "../components/create/CreateFoodForm";
 import EditFoodForm from "../components/update/EditFoodForm";
@@ -7,8 +8,13 @@ import { foodItems, categories } from "../data/mockData";
 import { FoodItem } from "../types/FoodItem";
 
 import axios from "axios"
+import { useAuth } from "@/hooks/useAuth";
+
 
 const Index = () => {
+  const { dispatch } = useAuth()
+  const navigate = useNavigate()
+
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [isCreating, setIsCreating] = useState(false);
   const [editingItem, setEditingItem] = useState<FoodItem | null>(null);
@@ -24,7 +30,13 @@ const Index = () => {
   useEffect(()=>{
     async function fetchData(){
       try{
-       const res = await axios.get("http://localhost:4000/meal")
+        const user = JSON.parse(localStorage.getItem("user") || "{}");
+       const res = await axios.get("http://localhost:4000/meal", {
+        headers: {
+          Authorization: `Bearer ${user.token}`
+        }
+       })
+
         const data = res.data
         selectedCategory === "all" 
          ? setFilteredItems(data)
@@ -35,7 +47,13 @@ const Index = () => {
       }
     }
     fetchData()
-  }, [selectedCategory])
+  }, [selectedCategory, filteredItems])
+
+  async function logoutHandler(){
+    localStorage.removeItem("user")
+    dispatch({ type: "LOGOUT"})
+    navigate("/user/login")
+  }
 
 
   return (
@@ -43,9 +61,14 @@ const Index = () => {
       <div className="container mx-auto px-4 py-8">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold text-foreground mb-2">Food Items Management</h1>
-            <p className="text-muted-foreground">Manage your restaurant menu items</p>
+          <div className="mb-8 flex justify-between">
+            <div className=" ">
+              <h1 className="text-3xl font-bold text-foreground mb-2">Food Items Management</h1>
+              <p className="text-muted-foreground">Manage your restaurant menu items</p>
+            </div>
+            <span onClick={()=>logoutHandler()}>
+              LogOut
+            </span>
           </div>
 
           {/* Action Bar */}
