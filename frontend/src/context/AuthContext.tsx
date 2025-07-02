@@ -1,8 +1,21 @@
 import { createContext, useReducer, Dispatch } from "react";
 
+interface AuthUser {
+  id: string;
+  email: string;
+  token: string;
+  role?: 'user' | 'admin';
+}
 
+interface AuthState {
+  user: AuthUser | null;
+}
 
-export const AuthContext = createContext(null)
+interface AuthContextType extends AuthState {
+  dispatch: Dispatch<any>;
+}
+
+export const AuthContext = createContext<AuthContextType | null>(null);
 
 const authReducer = (state, action) => {
     switch(action.type){
@@ -15,11 +28,15 @@ const authReducer = (state, action) => {
     }
 }
 
-const initialState = {
-    user: JSON.parse(localStorage.getItem("user")) || null,
+const initialState: AuthState = {
+  user: JSON.parse(localStorage.getItem("user") || "null"),
+};
+
+interface AuthProviderProps {
+  children: React.ReactNode;
 }
 
-export const AuthProvider = ({children}) => {
+export const AuthProvider = ({ children }: AuthProviderProps) => {
     const [state, dispatch] = useReducer(authReducer, initialState);
   
     return(

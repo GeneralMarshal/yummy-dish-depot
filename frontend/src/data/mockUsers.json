@@ -1,0 +1,27 @@
+
+[
+  {
+    "id": "1",
+    "email": "admin@example.com",
+    "role": "admin",
+    "name": "Admin User",
+    "createdAt": "2024-01-01T00:00:00Z",
+    "isActive": true
+  },
+  {
+    "id": "2",
+    "email": "user1@example.com",
+    "role": "user",
+    "name": "John Doe",
+    "createdAt": "2024-01-02T00:00:00Z",
+    "isActive": true
+  },
+  {
+    "id": "3",
+    "email": "user2@example.com",
+    "role": "user",
+    "name": "Jane Smith",
+    "createdAt": "2024-01-03T00:00:00Z",
+    "isActive": false
+  }
+]
